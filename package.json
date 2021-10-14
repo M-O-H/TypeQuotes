@@ -8,10 +8,10 @@
     "build": "cd frontend && npm run build",
     "install-client": "cd frontend && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node server.js",
     "client": "cd frontend && npm start",
     "server": "nodemon server.js --ignore client",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run start --prefix client\""
   },
   "author": "",
   "license": "ISC",
