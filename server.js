@@ -5,6 +5,8 @@ const mongoose = require('mongoose')
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session');
+const path = require("path");
+
 require('dotenv').config()
 
 // connect to mongodb
@@ -33,6 +35,11 @@ app.use('/', require('./routes/userRoute'))
 // authentication routes
 app.use('/auth', require('./routes/authRoute'))
 
-app.listen(3001, () => {
+app.use(express.static(path.resolve(__dirname, "./frontend/build")));
+app.get("*", function (request, response) {
+	response.sendFile(path.resolve(__dirname, "./frontend/build", "index.html"));
+  });
+
+app.listen(process.env.PORT, () => {
 	console.log("Server is up and running on port 3001")
 })
