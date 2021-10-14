@@ -37,14 +37,19 @@ app.use('/', require('./routes/userRoute'))
 app.use('/auth', require('./routes/authRoute'))
 
 // app.use(express.static(path.join("frontend/build")));
-app.get("*", function (request, response) {
-	response.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-  });
+// app.get("*", function (request, response) {
+// 	response.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+//   });
 
 
 if(process.env.NODE_ENV === 'production'){
 	app.use(express.static('frontend/build'));
-	
+	app.get("*", (req, res) => {
+		let url = path.join(__dirname, 'frontend/build', 'index.html');
+		if (!url.startsWith('/app/')) // since we're on local windows
+		  url = url.substring(1);
+		res.sendFile(url);
+	  });
 }
 
 app.listen(PORT, () => {
