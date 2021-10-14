@@ -1,0 +1,21 @@
+@import "../App.css";
+.box-wrapper{
+	display: flex;
+	padding: 0 6em;
+	justify-content: center;
+	align-items: center;
+	height: 60vh;
+	width: 100%;
+}
+.display-quote{
+	padding: 1em;
+	line-height: 1.7em;
+}
+
+span{
+	font-size: 25px;
+    line-height: 150%;
+}
+span:first-child{
+	background-color: #d4d4d4;
+}

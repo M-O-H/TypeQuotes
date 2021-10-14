@@ -1,0 +1,47 @@
+@import './theme/themes.css';
+
+.App{
+  height: 100vh;
+}
+body{
+  background: var(--body-background);
+  height: 100vh;
+  transition: background 300ms ease-in-out;
+}
+
+.logo{
+  color: var(--logo-color);
+}
+.icons{
+  color: var(--icons-text-color);
+  background-color: var(--icons-background);
+  cursor: pointer;
+}
+
+.icons:hover{
+  color: var(--iconsHover-text-color);
+  background: var(--iconsHover-background);
+}
+
+.spinner{
+  color: var(--icons-text-color)
+}
+.display-quote{
+  color: var(--quoteBox-text-color);
+  background-color: var(--quoteBox-background);
+  font-family: var(--quoteBox-fontFamily);
+  transition: background 500ms, color 700ms ease-in-out;
+}
+
+.cursor{
+  background-color: var(--cursor-color);
+}
+
+.done{
+  color: var(--correct-text-color);
+}
+
+.incorrect{
+  color: var(--incorrect-text-color);
+  background-color: var(--incorrect-background);
+}
