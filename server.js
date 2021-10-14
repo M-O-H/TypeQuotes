@@ -35,9 +35,9 @@ app.use('/', require('./routes/userRoute'))
 // authentication routes
 app.use('/auth', require('./routes/authRoute'))
 
-app.use(express.static(path.resolve(__dirname, "/frontend/build")));
+app.use(express.static(path.join("frontend/build")));
 app.get("*", function (request, response) {
-	response.sendFile(path.resolve(__dirname, "/frontend/build", "index.html"));
+	response.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 
 app.listen(process.env.PORT, () => {
