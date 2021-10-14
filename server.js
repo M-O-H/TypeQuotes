@@ -6,11 +6,12 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session');
 const path = require("path");
+const PORT = process.env.PORT || 8080
 
 require('dotenv').config()
 
 // connect to mongodb
-mongoose.connect(process.env.MONGODB_DB_URL, (err)=>{
+mongoose.connect(process.env.MONGODB_DB_URL || "mongodb+srv://admin:12345@cluster0.ncy4q.mongodb.net/test?retryWrites=true&w=majority", (err)=>{
   if(err) throw err
   console.log('connected to database successfully')
 })
@@ -35,11 +36,16 @@ app.use('/', require('./routes/userRoute'))
 // authentication routes
 app.use('/auth', require('./routes/authRoute'))
 
-app.use(express.static(path.join("frontend/build")));
+// app.use(express.static(path.join("frontend/build")));
 app.get("*", function (request, response) {
 	response.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
   });
 
-app.listen(process.env.PORT, () => {
+
+if(process.env.NODE_ENV === 'production'){
+	app.use(express.static('frontend/build'))
+}
+
+app.listen(PORT, () => {
 	console.log("Server is up and running on port 3001")
 })
