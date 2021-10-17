@@ -11,10 +11,12 @@ passport.deserializeUser((user, done) => {
 	done(null, user)
 })
  
+let herokuCallBack = "https://tping-game.herokuapp.com/auth/google/redirect"
+let callbackURL = "http://localhost:3001/auth/google/redirect";
 passport.use(new GoogleStrategy({
 	clientID: process.env.GOOGLE_CLIENT_ID ,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: "http://localhost:3001/auth/google/redirect",
+	callbackURL: herokuCallBack,
 	proxy: true 
 },
 	function(accessToken, refreshToken, profile, done) {
