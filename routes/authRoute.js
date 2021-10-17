@@ -3,6 +3,7 @@ const express = require('express')
 const passportConfig = require('../auth/passport');
 const router = express.Router();
 const successUrl = "http://localhost:3000/profile"
+const TsuccessUrl = "/profile"
 const failedUrl = "http://localhost:3000/failed"
 
 router.route('/google').get(passport.authenticate('google', { scope:[ 'email', 'profile' ] }))
@@ -14,7 +15,7 @@ router.route('/google/redirect').get(
 	}),
 	(req, res) => {
     // Successful authentication, redirect home.
-    res.redirect(successUrl);
+    res.redirect(TsuccessUrl);
 });
 
 module.exports = router
