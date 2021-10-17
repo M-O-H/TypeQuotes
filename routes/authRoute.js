@@ -3,7 +3,7 @@ const express = require('express')
 const passportConfig = require('../auth/passport');
 const router = express.Router();
 const successUrl = "http://localhost:3000/profile"
-const TsuccessUrl = "/profile"
+const TsuccessUrl = "https://tping-game.herokuapp.com//profile"
 const failedUrl = "http://localhost:3000/failed"
 
 router.route('/google').get(passport.authenticate('google', { scope:[ 'email', 'profile' ] }))
