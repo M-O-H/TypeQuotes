@@ -13,7 +13,8 @@ const Container = styled.div`
 
 const redirectToGoogleSSO = async ()=> {
 	const googleLoginURL = "http://localhost:3001/auth/google/";
-	window.open(googleLoginURL,"_self", "width=500, height=600");
+	const HgoogleLoginURL = "https://tping-game.herokuapp.com/auth/google/";
+	window.open(HgoogleLoginURL,"_self", "width=500, height=600");
 }
 
 const Login = () => {
