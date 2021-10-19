@@ -12,7 +12,7 @@ const Container = styled.div`
 
 
 const redirectToGoogleSSO = async ()=> {
-	const googleLoginURL = "http://localhost:3001/auth/google";
+	const googleLoginURL = "/auth/google";
 	const HgoogleLoginURL = "/auth/google/";
 	window.open(googleLoginURL,"_self", "width=500, height=600");
 }

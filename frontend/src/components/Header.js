@@ -38,7 +38,7 @@ const Header = ()=>{
 						<Link to="/"><MdKeyboard  size="1.5em"  className="kb icons"/></Link>
 						<Link to="/settings"><MdSettings size="1.5em"  className="kb icons"/></Link>
 						<Link to="/profile"><FaUser size="23px"  className="kb icons" /></Link>
-						<Link to="/Rank"><FaUser size="23px"  className="kb icons" /></Link>
+						<Link to="/rank"><FaUser size="23px"  className="kb icons" /></Link>
 					</Menu>
 			</NavBar>
 		</Container>

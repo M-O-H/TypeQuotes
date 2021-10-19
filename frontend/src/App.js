@@ -29,7 +29,7 @@ function App() {
           <Route path="/failed">Error loging in. please try again later!</Route>
           <Route path="/success" exact >thanks for login in </Route>
           <Route path="/login" exact component={Login}/>
-          <Route path="/Rank" exact component={Rank}/>
+          <Route path="/rank" exact component={Rank}/>
           {
             auth === true ? <Route path="/profile" exact component={Profile}/> : <Redirect to="/login" />
           }

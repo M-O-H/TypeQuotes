@@ -2,7 +2,7 @@ const passport = require('passport');
 const express = require('express')
 const passportConfig = require('../auth/passport');
 const router = express.Router();
-const successUrl = "http://localhost:3000/profile"
+const successUrl = "/profile"
 const TsuccessUrl = "https://tping-game.herokuapp.com/profile"
 const failedUrl = "http://localhost:3000/failed"
 

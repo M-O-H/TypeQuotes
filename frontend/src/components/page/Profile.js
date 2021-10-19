@@ -16,8 +16,7 @@ const Profile = () => {
 
 	useEffect(() => {
 		document.onkeydown = null;
-		fetch("/profile").then(res => {
-			if(res.ok)
+		fetch("/userInfo").then(res => {
 				return res.json()
 		}).then(jsonRes => {
 			setUser(jsonRes)
