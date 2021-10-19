@@ -18,6 +18,9 @@ router.route('/result').post((req, res)=>{
     setResult(req.body.id, req.body.wpm)
 })
 
+router.route('/myprofile').get((req, res) =>{
+  res.redirect('http://localhost:3000/profile')
+})
 router.route('/profile').get((req, res)=>{
   if(req.user.id)
     User.findOne({googleId:req.user.id}).then((currentUser) => {

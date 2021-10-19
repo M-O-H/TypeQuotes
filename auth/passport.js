@@ -16,7 +16,7 @@ let callbackURL = "http://localhost:3001/auth/google/redirect";
 passport.use(new GoogleStrategy({
 	clientID: process.env.GOOGLE_CLIENT_ID ,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: herokuCallBack,
+	callbackURL: callbackURL,
 	proxy: true 
 },
 	function(accessToken, refreshToken, profile, done) {
