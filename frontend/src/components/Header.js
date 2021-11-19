@@ -1,47 +1,67 @@
 import React from 'react'
-import {MdKeyboard, MdSettings} from "react-icons/md"
-import {FaUser} from 'react-icons/fa'
 import styled from 'styled-components';
 import {Link } from "react-router-dom";
-const Container = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;`
+
+const Topbar = styled.div`
+	display: flex;
+	justify-content: space-between;
+	padding: 0 2rem;
+`
 
 const NavBar = styled.div`
-display: flex;
-justify-content: space-between;
-width: 50%;
+font-size: 1rem;
 align-items: center;
-padding: 2em 0;
-color: lightgoldenrodyellow;`
+display: grid;
+grid-auto-flow: column;
+gap: 2rem;
+width: fit-content;
+`
 
 const Logo = styled.div`
-font-size: 30px;
-font-family:  "Roboto Mono";`
+font-size: 2em;
+font-family:  "Roboto Mono";
+color: lightgoldenrodyellow;
+`
 
-const Menu = styled.div`
-display: flex;
-justify-content: space-between;
-width: 10em;`
+const Icon = styled.span`
+	color: var(--icons-text-color);
+	background-color: var(--icons-background);
+	cursor: pointer;
+	font-size: 1.7em;
+`
+const Crown = styled.span`
+	color: var(--icons-text-color);
+	background-color: var(--icons-background);
+	cursor: pointer;
+	font-size: 1.5em;
+`
 
 const Header = ()=>{
 
 	return (
-		<Container>
-			<NavBar>
-				<Logo>
-					<div>Type</div>
-					<div>quotes</div>
-				</Logo>
-					<Menu>
-						<Link to="/"><MdKeyboard  size="1.5em"  className="kb icons"/></Link>
-						<Link to="/settings"><MdSettings size="1.5em"  className="kb icons"/></Link>
-						<Link to="/profile"><FaUser size="23px"  className="kb icons" /></Link>
-						<Link to="/rank"><FaUser size="23px"  className="kb icons" /></Link>
-					</Menu>
-			</NavBar>
-		</Container>
+		<Topbar>
+			<Logo>
+				<div>Type</div>
+				<div>quotes</div>
+			</Logo>
+				<NavBar>
+					<Link to="/">
+							<Icon className="iconify" data-icon="fluent:keyboard-layout-split-24-filled"></Icon>
+					</Link>
+
+					<Link to="/settings">
+							<Icon className="iconify" data-icon="fluent:dark-theme-24-filled"></Icon>
+					</Link>
+
+					<Link to="/profile">
+							<Icon className="iconify" data-icon="carbon:user-avatar-filled"></Icon>
+					</Link>
+
+					<Link to="/rank">
+							<Crown className="iconify" data-icon="fa-solid:crown"></Crown>
+					</Link>
+				</NavBar>
+		</Topbar>
 	)}
 
 export default Header

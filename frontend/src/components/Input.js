@@ -14,11 +14,24 @@ var string = 0;
 
 const BoxWrapper = styled.div`
 display: flex;
-padding: 0 6em;
+border-radius; 10px;
 justify-content: center;
 align-items: center;
-height: 60vh;
-width: 100%;
+flex-direction: column;
+`;
+
+const Didsplayquote = styled.div`
+align-items: center;
+display: grid;
+grid-row-flow: column;
+gap: 2rem;
+width: fit-content;
+font-family: var(--quoteBox-fontFamily);
+background-color: var(--quoteBox-background);
+color: var(--quoteBox-text-color);
+transition: background 500ms, color 700ms ease-in-out;
+padding: 1em;
+border-radius: .6em;
 `;
 
 const SpinnerWrapper = styled.div`
@@ -28,13 +41,26 @@ align-items: center;
 width: 100%;
 height: 100%;`
 
-const Button = styled.button`
-border: none;
-outline: none;
-padding: 1rem;
-background: var(--icons-text-color);
-color: var(--body-background);
+const Textwrapper = styled.div`
+	padding-top: .4rem;
 `
+const Button = styled.button`
+background: none;
+color: #E9E1E1;
+border: none;
+margin-left: auto;
+`
+const Lable = styled.div`
+	display: flex;
+	color: #E9E1E1;
+	padding: .4em 0;
+`
+const State = styled.div`
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 1.5em;
+`
+
 const handleKeyPress = (e, text)=>{
 	const arrayQuote = document.querySelectorAll('span');
 	let cursorCharacter =  arrayQuote[index];
@@ -72,19 +98,21 @@ const handleKeyPress = (e, text)=>{
 
 
 const Input = ()=>{
-	const [quote, setQuote] = useState(()=>'');
-	const [loading, setLoading] = useState(()=>true);
-	const [result, setResult] = useState(()=>null);
-
 	index = 0;
 	correctLetters = 0;
 	startTime = null;
 	mistakes = 0;
 	index = 0;
-	
+
+	const [quote, setQuote] = useState(()=>'');
+	const [loading, setLoading] = useState(()=>true);
+	const [result, setResult] = useState(()=>null);
+	const [game, setGame] = useState(()=>'off')
 
 	const KeyDownEvent = () => {
 		document.onkeydown =((e)=>{
+			if(game==='off')
+				setGame('on')
 			let value =  handleKeyPress(e, quote);
 			if(value){
 				var result;
@@ -105,8 +133,10 @@ const Input = ()=>{
 	}
 
 	const fetchQuotes = async()=>{
+		setGame('off')
 		setLoading(true)
 		setResult(null);
+		setLoading(false)
 		await axios.get('https://api.quotable.io/random')
 		.then(res => {
 			setLoading(false)
@@ -137,15 +167,28 @@ const render = ()=>{
 		return <SpinnerWrapper className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
 	else if(result == null){
 		return <div>
-		<div className="display-quote">{
-				quote.split('').map((char, id) => <span key={id} className="char">{char.toLowerCase()}</span>)}
-			</div>
-			<Button type="submit" tabindex="-1" onClick={handleClick} className="disabled" >NEXT</Button>
+		<Didsplayquote >
+			<Textwrapper>
+			{
+				quote.split('').map((char, id) => <span key={id} className="char">{char.toLowerCase()}</span>)
+			}
+			</Textwrapper>
+			<Lable>
+				<State>
+					<div>Game / {game}</div>
+					<div>Words / {quote.split(' ').length}</div>
+				</State>
+				<Button type="submit" tabindex="-1" onClick={handleClick} className="disabled" >
+					Next quote
+					<span className="iconify" data-icon="grommet-icons:form-next-link"></span>
+				</Button>
+			</Lable>
+		</Didsplayquote>
 		</div>
 		}
 		else return <div>
 			<Status result={result}/>
-			<Button type="submit" tabindex="-1" onClick={handleClick} className="disabled" >Next</Button>
+			{/* <Button type="submit" tabindex="-1" onClick={handleClick} className="disabled" >Next</Button> */}
 		</div>
 }
 	return (

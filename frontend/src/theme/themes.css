@@ -1,12 +1,12 @@
 .default{
-	--body-background: #303030;
+	--body-background: #302F2E;
 	--text-color: #ebbb53;
-	--icons-text-color: #847869;
+	--icons-text-color: #D8D8D8;
 	--icons-background: '';
 	--iconsHover-text-color: #e4ac6d;
 	--iconsHover-background: #2b2a2a4f;
-	--quoteBox-text-color: #4b4c52;
-	--quoteBox-background: #1816166b;
+	--quoteBox-text-color: #c7c2c2;
+	--quoteBox-background: #474747;
 	--quoteBox-fontFamily: "Roboto Mono";
 	--cursor-color: #d4d4d4;
 	--correct-text-color: #f3f3f3;
@@ -14,7 +14,6 @@
   --incorrect-text-color: #f38888;
   --incorrect-background: none;
   }
-
 
 .ishtar{
 	--body-background: #202020;

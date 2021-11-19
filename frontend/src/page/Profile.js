@@ -1,29 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import Card from './Card'
-
+import Card from '../components/Card'
 
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-item: center;
-	padding: 3em;
+	padding: 0 3em;
 `
 
+
 const Profile = () => {
-	const [user, setUser] = useState({})
+	const [user, setUser] = useState(()=>{})
 
 	useEffect(() => {
 		document.onkeydown = null;
-		fetch("/userInfo").then(res => {
-				return res.json()
-		}).then(jsonRes => {
-			setUser(jsonRes)
-		}).catch((err)=>{
-			console.log(err)
-		})
-	}, [])
+		fetch("/userInfo").then(res => res.json())
+		.then(jsonRes => setUser(jsonRes))
+		.catch((err)=> console.log(err))
+	}, [user])
 	
 	return(
 		<Wrapper>

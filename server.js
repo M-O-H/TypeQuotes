@@ -6,7 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session');
 const path = require("path");
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3001
 
 require('dotenv').config()
 
@@ -60,5 +60,5 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 app.listen(PORT, () => {
-	console.log("Server is up and running on port 3001")
+	console.log("Server is up and running on port" + `http://localhost:${PORT}/`)
 })

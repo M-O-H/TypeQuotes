@@ -27,10 +27,11 @@ const Status = ({result})=>{
 
 	useEffect(() => {
 		axios.post('/result', result)
-		.catch(err => {
-			if(err) console.log("network erorr");
+		.catch(err=> {
+			if(err) console.log('network error')
 		})
-	})
+	},[result])
+
 	return (
 		<StatusWrapper>
 			<Column>
