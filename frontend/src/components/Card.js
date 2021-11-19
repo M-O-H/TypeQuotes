@@ -23,7 +23,7 @@ const Card = ({props}, { serialize = JSON.stringify , deserialize = JSON.parse }
 	console.log(props)
 	return(
 		<>
-			<img width={'25%'} src={props.img}/>
+			{/* <img width={'25%'} src={props.img}/> */}
 			<UserWrapper>
 				<span>{props.username}</span>
 			</UserWrapper>
