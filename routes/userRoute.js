@@ -28,7 +28,7 @@ router.route('/userInfo').get((req, res) => {
       if(currentUser)
         res.json(currentUser)
       else
-        res.json("no user loggin in")
+        res.json("no user found")
     })
 })
 

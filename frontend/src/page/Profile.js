@@ -17,7 +17,10 @@ const Profile = () => {
 	useEffect(() => {
 		document.onkeydown = null;
 		fetch("/userInfo").then(res => res.json())
-		.then(jsonRes => setUser(jsonRes))
+		.then(jsonRes => {
+			if(!jsonRes === 'no user found')
+				setUser(jsonRes)
+		})
 		.catch((err)=> console.log(err))
 	}, [user])
 	
