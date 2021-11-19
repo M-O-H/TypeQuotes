@@ -11,18 +11,24 @@ const Wrapper = styled.div`
 `
 
 
-const Profile = () => {
-	const [user, setUser] = useState(()=>{})
+let obj = {
+	img:'loadding..',
+	username:'loadding...',
+	wpm:12,
+	rank:'loadding...'
+}
 
-	useEffect(() => {
-		document.onkeydown = null;
-		fetch("/userInfo").then(res => res.json())
-		.then(jsonRes => {
-			if(!jsonRes === 'no user found')
-				setUser(jsonRes)
-		})
+const Profile = () => {
+	const [user, setUser] = useState(()=>obj)
+	const fetchUser = async()=>{
+		await fetch("/userInfo").then(res => res.json())
+		.then(jsonRes => setUser(jsonRes))
 		.catch((err)=> console.log(err))
-	}, [user])
+	}
+	useEffect(() => {
+		fetchUser()
+		document.onkeydown = null;
+	}, [])
 	
 	return(
 		<Wrapper>

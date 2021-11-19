@@ -18,15 +18,14 @@ background: lightblue;
 padding: 3rem;
 border-radius: 5rem;
 `
-
 const Card = ({props}, { serialize = JSON.stringify , deserialize = JSON.parse }) => {
 	console.log(props)
 	return(
 		<>
-			{/* <img width={'25%'} src={props.img}/> */}
+			<img width={'25%'} src={props.img}/>
 			<UserWrapper>
-				<span>{props.username}</span>
 			</UserWrapper>
+				<H>{props.username}</H>
 			<H>{serialize(props.wpm)}</H>
 			<H>{serialize(props.rank)}</H>
 		</>

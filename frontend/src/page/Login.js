@@ -9,9 +9,9 @@ const Container = styled.div`
 	align-item: center;
 	padding: 3rem;
 `
-
+// /auth/google/
 const redirectToGoogleSSO = async ()=> {
-	const googleLoginURL = "/auth/google";
+	const googleLoginURL = "auth/google";
 	window.open(googleLoginURL,"_self", "width=500, height=600");
 }
 

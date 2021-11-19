@@ -30,6 +30,7 @@ router.route('/userInfo').get((req, res) => {
       else
         res.json("no user found")
     })
+    else res.json("no user found")
 })
 
 router.route('/board').get((req, res) => {
