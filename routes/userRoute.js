@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const router = express.Router();
 const User = require('../models/userModel');
 
@@ -6,31 +6,31 @@ const setResult = (id, wpm) => {
   User.findOne({googleId:id}).then(doc => {
     if(wpm > doc.wpm)
     User.updateOne({googleId:id}, {wpm:wpm}).then(console.log("data updated"))
-  })
+  });
 }
 
 router.route('/user').get((req, res) => {
   if(req.user)
-    res.json(req.user)
+    res.json(req.user);
   else
-    res.json('no user login')
+    res.json('user not found');
 })
 
 router.route('/result').post((req, res) => {
   if(req.body.id)
-    setResult(req.body.id, req.body.wpm)
+    setResult(req.body.id, req.body.wpm);
 })
 
 router.route('/userInfo').get((req, res) => {
-  if(req.user.id)
+  if(req.user)
     User.findOne({googleId:req.user.id})
     .then((currentUser) => {
       if(currentUser)
-        res.json(currentUser)
+        res.json(currentUser);
       else
-        res.json("no user found")
+        res.json("no user found");
     })
-    else res.json("no user found")
+    else res.json("no user found");
 })
 
 router.route('/board').get((req, res) => {

@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
-import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner'
+
 const Board = styled.div`
 `
 
 const Wrapper = styled.div`
 	display: grid;
-	grid-template-columns: repeat(6, 1fr);
+	grid-template-columns: repeat(5, 1fr);
 	background: var(--quoteBox-background);
 	align-items: center;
 	border-radius: .6em;
@@ -24,12 +25,12 @@ const Avatar = styled.img`
 `
 const Attribute = styled.div`
 display: grid;
-grid-template-columns: repeat(6, 1fr);
+grid-template-columns: repeat(5, 1fr);
 align-items: center;
 border-radius: .7em;
 `
 const H1 = styled.div`
-	font-size: 1.4rem;
+	font-size: 1rem;
 	text-align: center;
 	color: #fff;
 	color: var(	--quoteBox-text-color)
@@ -37,11 +38,20 @@ const H1 = styled.div`
 
 const Table = styled.div`
 	background-color: var--quoteBox-background);
+	height: 100%;
 	`
 
+
+const SpinnerWrapper = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
+`
+
 const LeaderBoard = () => {
-	const [players, setPlayers] = useState(()=>[])
-	
+	const [players, setPlayers] = useState(()=>null)
 	var rank = 1;
 	const fetchUsers = async() => {
 		fetch('/board').then(res => {
@@ -49,12 +59,6 @@ const LeaderBoard = () => {
 		.then(data => setPlayers(data))
 		.catch(err =>{ if(err) throw err})
 	}
-
-	useEffect(() => {
-		document.onkeydown = null;
-		fetchUsers()
-	}, []);
-
 
 	return (
 		<Board>
@@ -64,13 +68,14 @@ const LeaderBoard = () => {
 				<H1>username</H1>
 				<H1>rank</H1>
 				<H1>wpm</H1>
-				<H1>Date</H1>
 			</Attribute>
 			<Table>
 			{
+				players === null ? <SpinnerWrapper ref={SpinnerRef}  className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
+				:
 				players.map(ply => 
 					<div key={ply.googleId}>
-						<Wrapper>
+						<Wrapper className="box">
 							<Filed>{rank++}</Filed>
 							<Filed><Avatar src={ply.img}/></Filed>
 							<Filed>{ply.username}</Filed>

@@ -43,8 +43,6 @@ const Header = styled.div`
 
 
 const settting = () => {
-	console.log('redener ')
-
 	const ref = useRef('default')
 	const setTheme = (selectedTheme) => {
 		document.body.classList.replace(ref.current, selectedTheme)
@@ -53,9 +51,6 @@ const settting = () => {
 	}
 
 
-	useEffect(() => {
-		document.onkeydown = null;
-	}, [])
 	return(
 		<Container>
 			<Header>Themes</Header>

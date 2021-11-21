@@ -9,9 +9,10 @@ const Container = styled.div`
 	align-item: center;
 	padding: 3rem;
 `
+
 // /auth/google/
 const redirectToGoogleSSO = async ()=> {
-	const googleLoginURL = "auth/google";
+	const googleLoginURL = "http://localhost:3001/auth/google";
 	window.open(googleLoginURL,"_self", "width=500, height=600");
 }
 
@@ -33,13 +34,11 @@ const Login = () => {
 
 	useEffect(() => {
 	  fetchUser()
-	  document.onkeydown = null
 	}, [auth])
 
 	return (
 		<Container>
 			{
-				// loader === false? <SpinnerWrapper className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper> :
 				auth ? <Redirect to="/profile" /> : 
 			<GoogleButton onClick={redirectToGoogleSSO} style={{width: "17em"}}/>
 			}

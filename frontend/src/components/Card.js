@@ -19,7 +19,6 @@ padding: 3rem;
 border-radius: 5rem;
 `
 const Card = ({props}, { serialize = JSON.stringify , deserialize = JSON.parse }) => {
-	console.log(props)
 	return(
 		<>
 			<img width={'25%'} src={props.img}/>

@@ -50,6 +50,14 @@ color: #E9E1E1;
 border: none;
 margin-left: auto;
 `
+
+const Btn = styled.button`
+font-family: var(--quoteBox-fontFamily);
+background-color: var(--quoteBox-background);
+color: var(	--text-color);
+border: none;
+`
+
 const Lable = styled.div`
 	display: flex;
 	color: #E9E1E1;
@@ -120,7 +128,6 @@ const Input = ()=>{
 				.then(res => {
 					result = {id:res.data.id, wpm:value.wpm, acc:value.accuracy}
 					setResult(result);
-					document.onkeydown = null;
 				})
 				.then(err => {
 					if(err){
@@ -136,7 +143,6 @@ const Input = ()=>{
 		setGame('off')
 		setLoading(true)
 		setResult(null);
-		setLoading(false)
 		await axios.get('https://api.quotable.io/random')
 		.then(res => {
 			setLoading(false)
@@ -159,6 +165,8 @@ const Input = ()=>{
 useEffect(() => {
 	setResult(null);
 	fetchQuotes();
+	return () => 
+		document.onkeydown = null;
 }, []);
 
 
@@ -188,7 +196,10 @@ const render = ()=>{
 		}
 		else return <div>
 			<Status result={result}/>
-			{/* <Button type="submit" tabindex="-1" onClick={handleClick} className="disabled" >Next</Button> */}
+				<Btn type="submit" tabindex="-1" onClick={handleClick} className="disabled" >
+					Next quote
+					<span className="iconify" data-icon="grommet-icons:form-next-link"></span>
+				</Btn>
 		</div>
 }
 	return (

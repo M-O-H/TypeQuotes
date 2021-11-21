@@ -32,7 +32,7 @@ function App() {
               setAuth(false)
             else setAuth(true)
           })
-          .catch(err => { if(err) setAuth(false) })
+          .catch(err => { if(err) setAuth('server error') })
   }
 
   useEffect(() => {
