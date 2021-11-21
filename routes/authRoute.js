@@ -15,7 +15,7 @@ router.route('/google/redirect').get(
 	}),
 	(req, res) => {
     // Successful authentication, redirect home.
-    res.redirect(successUrl);
+    res.redirect(TsuccessUrl);
 });
 
 module.exports = router
