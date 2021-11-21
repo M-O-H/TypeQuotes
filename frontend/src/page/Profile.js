@@ -19,10 +19,16 @@ width: 100%;
 height: 100%;`
 
 const Profile = () => {
-	const [user, setUser] = useState(()=>null)
+	const [user, setUser] = useState(null)
+	const [isLoading, setIsloading] = useState(false)
 	const fetchUser = async()=>{
 		await fetch("/userInfo").then(res => res.json())
-		.then(jsonRes => setUser(jsonRes))
+		.then(jsonRes => {
+			if(jsonRes === 'user not found')
+				isLoading(false)
+			else
+			setUser(jsonRes)
+		})
 		.catch((err)=> console.log(err))
 	}
 	useEffect(() => {
@@ -31,7 +37,7 @@ const Profile = () => {
 	
 	return(
 		<Wrapper>
-			{user === null ?  <SpinnerWrapper className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
+			{isLoading === false ?  <SpinnerWrapper className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
 			: <Card props={user}/>
 			}
 		</Wrapper>

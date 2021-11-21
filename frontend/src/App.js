@@ -28,7 +28,7 @@ function App() {
     await fetch("/user")
           .then(res => res.json())
           .then(data => {
-            if(data === 'no user login')
+            if(data === 'user not found')
               setAuth(false)
             else setAuth(true)
           })
