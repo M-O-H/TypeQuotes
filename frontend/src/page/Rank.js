@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Spinner from 'react-bootstrap/Spinner'
 
@@ -60,6 +60,13 @@ const LeaderBoard = () => {
 		.catch(err =>{ if(err) throw err})
 	}
 
+	
+
+	useEffect(() => {
+		fetchUsers()
+	}, []);
+
+
 	return (
 		<Board>
 			<Attribute>
@@ -71,7 +78,7 @@ const LeaderBoard = () => {
 			</Attribute>
 			<Table>
 			{
-				players === null ? <SpinnerWrapper ref={SpinnerRef}  className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
+				players === null ? <SpinnerWrapper className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
 				:
 				players.map(ply => 
 					<div key={ply.googleId}>

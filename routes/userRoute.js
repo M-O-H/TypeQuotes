@@ -28,9 +28,9 @@ router.route('/userInfo').get((req, res) => {
       if(currentUser)
         res.json(currentUser);
       else
-        res.json("no user found");
+        res.json("user not found");
     })
-    else res.json("no user found");
+    else res.json("user not found");
 })
 
 router.route('/board').get((req, res) => {
