@@ -1,9 +1,10 @@
 import React, {useState, useEffect}from 'react';
 import { Input, Header, Setting, Login, Profile, Rank} from './components/index'
-import { BrowserRouter as Router, Redirect, Route , Switch} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route , Switch, useHistory} from "react-router-dom";
 import styled from 'styled-components';
 import './theme/themes.css'
 import './App.css'
+import axios from 'axios';
 
 const Content = styled.div`
 max-width: 1000px;
@@ -22,22 +23,28 @@ const Footer = styled.div`
 
 // custome component to make https requests
 function App() {
-  const [auth, setAuth] = useState(()=>false)
 
+  const [auth, setAuth] = useState(()=>false)
   const fetchUser = async () => {
-    await fetch("/user")
-          .then(res => res.json())
-          .then(data => {
-            if(data === 'user not found')
-              setAuth(false)
-            else setAuth(true)
-          })
-          .catch(err => { if(err) setAuth('server error') })
+    await axios.get("/user")
+      .then(response => {
+        if(response.status == 200){
+          setAuth(true)
+        }
+        else
+        setAuth(false)
+      })
+      .catch((error) => { 
+        if(error.response.status === 500)
+          console.log("server error")
+        else console.log(error.response.data)
+      })
   }
 
   useEffect(() => {
     fetchUser()
   }, [])
+  
   return (
       <div   className={'App'}>
         <Router>

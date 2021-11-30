@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Spinner from 'react-bootstrap/Spinner'
+import axios from 'axios'
 
 const Board = styled.div`
 `
 
 const Wrapper = styled.div`
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(6, 1fr);
 	background: var(--quoteBox-background);
 	align-items: center;
 	border-radius: .6em;
@@ -25,7 +26,7 @@ const Avatar = styled.img`
 `
 const Attribute = styled.div`
 display: grid;
-grid-template-columns: repeat(5, 1fr);
+grid-template-columns: repeat(6, 1fr);
 align-items: center;
 border-radius: .7em;
 `
@@ -53,17 +54,28 @@ height: 100%;
 const LeaderBoard = () => {
 	const [players, setPlayers] = useState(()=>null)
 	var rank = 1;
-	const fetchUsers = async() => {
-		fetch('/board').then(res => {
-			if(res.ok) return res.json()})
-		.then(data => setPlayers(data))
-		.catch(err =>{ if(err) throw err})
-	}
 
 	
 
 	useEffect(() => {
-		fetchUsers()
+		const source = axios.CancelToken.source();
+		const fetchUsers = async(token) => {
+			await axios.get('/board', { cancelToken: token})
+			.then(response => {
+				if(response.status == 200)
+					setPlayers(response.data)
+				else setPlayers(null)
+			})
+			.catch(error => {
+				if(error.response.status == 500)
+					console.log('netwrok error')
+			})
+		}
+
+		fetchUsers(source.token);
+	  	return () => {
+            source.cancel();
+        };
 	}, []);
 
 
@@ -75,6 +87,7 @@ const LeaderBoard = () => {
 				<H1>username</H1>
 				<H1>rank</H1>
 				<H1>wpm</H1>
+				<H1>accuracy</H1>
 			</Attribute>
 			<Table>
 			{
@@ -88,6 +101,7 @@ const LeaderBoard = () => {
 							<Filed>{ply.username}</Filed>
 							<Filed>{ply.rank}</Filed>
 							<Filed>{ply.wpm}</Filed>
+							<Filed>{ply.accuracy}%</Filed>
 						</Wrapper>
 					</div>
 				)

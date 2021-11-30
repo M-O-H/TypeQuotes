@@ -24,7 +24,6 @@ passport.use(new GoogleStrategy({
 		User.findOne({googleId:profile.id}).then((currentUser) => {
 			if(currentUser){
 				// alrady have the user
-				console.log("user is:", currentUser)
 				done(null, profile)
 			} else {
 				new User({

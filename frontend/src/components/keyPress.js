@@ -1,3 +1,4 @@
+
 export const getResult =  (arrayQuote, text, startTime, correctLetters, mistakes)=>{
 	const endTime = new Date();
 	const seconds = (endTime - startTime) / 1000;

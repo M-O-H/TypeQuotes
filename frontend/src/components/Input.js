@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, createRef } from 'react'
 import { getResult ,replace } from './keyPress';
 import styled  from 'styled-components'
 import Status from './Status';
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import '../style/style.css'
-
-var correctLetters = 0;
-var startTime = null;
-var mistakes = 0;
-var  index = 0;
-var string = 0;
+import { set } from 'mongoose';
 
 const BoxWrapper = styled.div`
 display: flex;
@@ -69,142 +64,162 @@ grid-template-columns: repeat(2, 1fr);
 gap: 1.5em;
 `
 
-const handleKeyPress = (e, text)=>{
-	const arrayQuote = document.querySelectorAll('span');
-	let cursorCharacter =  arrayQuote[index];
-	arrayQuote[0].style.backgroundColor = 'initial';
-	if(!startTime)
-		startTime = new Date();
-	if(e.keyCode === 8 && index > 0){
-		--correctLetters;
-		--string;
-		cursorCharacter.classList.remove('cursor');
-		cursorCharacter =  arrayQuote[--index];
-		cursorCharacter.classList.remove('incorrect', 'done');
-	}
-	else if(string >= 93){
-		console.log("inc")
-	}
-	else if(e.key === cursorCharacter.innerText ){
-		++correctLetters;
-		string = 0;
-		replace(cursorCharacter, ['done', 'incorrect', 'cursor']);
-		cursorCharacter =  arrayQuote[++index];
-	}
-	else if(e.key !== cursorCharacter.innerText){
-		++mistakes;
-		++string;
-		replace(cursorCharacter, ['incorrect', 'done', 'cursor']);
-		cursorCharacter =  arrayQuote[++index];
-	}
-	if(index  >= text.length){
-		var result = getResult(arrayQuote,text, startTime, correctLetters, mistakes);
-		return result
-	}	
-	cursorCharacter.classList.add('cursor');
-};
-
 
 const Input = ()=>{
-	index = 0;
-	correctLetters = 0;
-	startTime = null;
-	mistakes = 0;
-	index = 0;
-
-	const [quote, setQuote] = useState(()=>'');
-	const [loading, setLoading] = useState(()=>true);
-	const [result, setResult] = useState(()=>null);
-	const [game, setGame] = useState(()=>'off')
-
-	const KeyDownEvent = () => {
-		document.onkeydown =((e)=>{
-			if(game==='off')
-				setGame('on')
-			let value =  handleKeyPress(e, quote);
-			if(value){
-				var result;
-				axios("/user")
-				.then(res => {
-					result = {id:res.data.id, wpm:value.wpm, acc:value.accuracy}
-					setResult(result);
-				})
-				.then(err => {
-					if(err){
-					result = {wpm:value.wpm, acc:value.accuracy}
-					setResult(result)
-					}
-				})
-			}
-		})
-	}
+	const [user, setUser] = useState(null)
+	const [quote, setQuote] = useState({});
+	const [index, setIndex] = useState(()=>{i:0})
+	const [result, setResult] = useState(null)
+	const [loaded, setLoaded] = useState(()=>false)
+	const [correct, setCorrect] = useState({c:0})
+	const [startTime, setStartTune] = useState({t:null})
+	const elRefs = useRef([])
 
 	const fetchQuotes = async()=>{
-		setGame('off')
-		setLoading(true)
-		setResult(null);
+		resetGame()
 		await axios.get('https://api.quotable.io/random')
 		.then(res => {
-			setLoading(false)
-			setQuote(res.data.content);
+			elRefs.current = 
+			Array(res.data.content.length).fill().map((_, i) => 
+				elRefs.current[i] || createRef());
+				setQuote(res.data);
+				setLoaded(true)
 		})
 		.catch((err) => {
 			throw err;
 		})
 	}
-	
+
+	const fetchUser = async () => {
+		await axios.get("/user")
+		  .then(response => {
+			if(response.status == 200){
+			  setUser(response.data.id)
+			}
+		  })
+		  .catch((error) => { 
+			if(error.response.status === 500)
+			  console.log("server error")
+			else console.log(error.response.data)
+		  })
+	  }
+	const getResult = () => {
+		const endTime = new Date();
+		const seconds = (endTime - startTime.t) / 1000;
+		const numberOfWords = quote.content.split(' ').length;
+		const wpm = Math.floor(( numberOfWords / seconds) * 60);
+		const incorrect = quote.content.split('').length - correct.c
+		const acc = Math.floor(((correct.c - incorrect) / quote.content.length) * 100);;
+		const accuracy = acc > 0 ? acc : 0
+		setResult({wpm:wpm, accuracy:accuracy, quoteInfo:quote, id:user})
+	}
+
+	const checkChar = (key, ele) => {
+		var temIndex = index
+		var temCorrect = correct
+		if(startTime.t==null)
+			setStartTune(startTime.t = new Date())
+		if(key === ele[temIndex.i].current.innerText){
+			ele[temIndex.i].current.className = 'done'
+			temIndex.i += 1
+			temCorrect.c += 1
+			setCorrect(temCorrect)
+			setIndex(temIndex)
+		}
+		else if(key === 'Backspace' && temIndex.i > 0){
+			ele[temIndex.i].current.className = ''
+			temIndex.i -= 1
+			setIndex(temIndex)
+			ele[temIndex.i].current.className = ''
+		}
+		else if(key !== ele[temIndex.i].current.innerHTMLL){
+			ele[temIndex.i].current.className = 'incorrect'
+			temIndex.i += 1
+			setIndex(temIndex)
+		}
+		if(temIndex.i == ele.length){
+			getResult()
+			window.removeEventListener('keydown', handlekeyDown);
+			
+		}
+		else ele[temIndex.i].current.className = 'cursor'
+	}
+
+	const handlekeyDown = (e) => {
+		let currentChar = elRefs.current
+		checkChar(e.key, currentChar)
+		
+	}
+
 	const handleClick = (e) => {
 		e.target.blur();
 		fetchQuotes()
 	}
-	
 
-	if(!loading)
-		KeyDownEvent()
+	// initialize state variables
+	const resetGame = () =>{
+		setResult(null)
+		setLoaded(false)
+		setIndex({i:0})
+		setCorrect({c:0})
+	}
 
-useEffect(() => {
-	setResult(null);
-	fetchQuotes();
-	return () => 
-		document.onkeydown = null;
-}, []);
+	useEffect(() => {
+		fetchQuotes();
+		fetchUser();
+		console.log('once');
+	}, []);
 
-
-const render = ()=>{
-	if(loading === true)
-		return <SpinnerWrapper className="SpinnerWrapper"><Spinner className="spinner" animation="border" /></SpinnerWrapper>
-	else if(result == null){
-		return <div>
-		<Didsplayquote >
-			<Textwrapper>
-			{
-				quote.split('').map((char, id) => <span key={id} className="char">{char.toLowerCase()}</span>)
-			}
-			</Textwrapper>
-			<Lable>
-				<State>
-					<div>Game / {game}</div>
-					<div>Words / {quote.split(' ').length}</div>
-				</State>
-				<Button type="submit" tabindex="-1" onClick={handleClick} className="disabled" >
-					Next quote
-					<span className="iconify" data-icon="grommet-icons:form-next-link"></span>
-				</Button>
-			</Lable>
-		</Didsplayquote>
-		</div>
+	useEffect(() => {
+		if(loaded == true){
+			elRefs.current.map((ele, i) => {
+				if(i == 0) ele.current.className = 'cursor'
+				else ele.current.className = null
+			} )
 		}
-		else return <div>
-			<Status result={result}/>
-				<Btn type="submit" tabindex="-1" onClick={handleClick} className="disabled" >
-					Next quote
-					<span className="iconify" data-icon="grommet-icons:form-next-link"></span>
-				</Btn>
-		</div>
-}
+		window.addEventListener('keydown', handlekeyDown);
+		return () => window.removeEventListener('keydown', handlekeyDown);
+	}, [quote])
+
+
+
 	return (
 		<BoxWrapper> 
-			{render()}
+			<Didsplayquote >
+				<Textwrapper>
+					{result == null ?
+					<>
+					{loaded? 
+						<>
+							{quote.content.split('').map((char, id) => {
+									return <span  ref={elRefs.current[id]}  key={id} className="">
+									{char.toLowerCase()}
+									</span>
+							})}
+							<Lable>
+								<Button type="submit"tabindex="-1" onClick={handleClick} className="disabled" >
+									Next quote
+									<span  className="iconify" data-icon="grommet-icons:form-next-link"></span>
+								</Button>
+							</Lable>
+						</>
+						: 
+						<SpinnerWrapper className="SpinnerWrapper">
+							<Spinner className="spinner" animation="border" />
+						</SpinnerWrapper>
+					}
+					</>
+					:
+					<>
+						<Status result={result}/>
+						<Button type="submit"tabindex="-1" onClick={handleClick} className="disabled" >
+							Next quote
+							<span  className="iconify" data-icon="grommet-icons:form-next-link"></span>
+						</Button>
+					</>
+					}
+				</Textwrapper>
+			</Didsplayquote>
 		</BoxWrapper>
 	)
 }

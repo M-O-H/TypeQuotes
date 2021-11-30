@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
-
 const StatusWrapper = styled.div`
 	padding: 0em;
 	width: 100%;
@@ -24,7 +23,6 @@ const Column = styled.div`
 	flex-directoin: column;
 `
 const Status = ({result})=>{
-
 	const fetchData = async() => {
 		if(result.id){
 			await axios.post('/result', result)
@@ -48,7 +46,7 @@ const Status = ({result})=>{
 			</Column>
 			<Column>
 				<Div className="acc">
-					{result.acc}
+					{result.accuracy}
 				</Div>
 			</Column>
 		</StatusWrapper>

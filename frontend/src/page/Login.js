@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Redirect } from "react-router-dom"
 import GoogleButton from 'react-google-button'
 import styled from 'styled-components'
+import axios from 'axios'
 
 const Container = styled.div`
 	display: flex;
@@ -12,7 +13,7 @@ const Container = styled.div`
 
 // /auth/google/
 const redirectToGoogleSSO = async ()=> {
-	const googleLoginURL = "auth/google";
+	const googleLoginURL = "/auth/google";
 	window.open(googleLoginURL,"_self", "width=500, height=600");
 }
 
@@ -20,21 +21,30 @@ const redirectToGoogleSSO = async ()=> {
 
 const Login = () => {
 	const [auth, setAuth] = useState(()=>false)
-  
-	const fetchUser = async () => {
-	  await fetch("/user")
-			.then(res => res.json())
-			.then(data => {
-				if(data === 'user not found')
-				  setAuth(false)
-				else setAuth(true)
-				})
-			.catch(err => {if(err) setAuth(false)})
-	}
 
 	useEffect(() => {
-	  fetchUser()
-	}, [auth])
+		const source = axios.CancelToken.source();
+		const fetchUser = async (token) => {
+			await axios.get("/user", { cancelToken: token})
+			  .then(response => {
+				if(response.status == 200)
+					setAuth(true)
+				else
+					setAuth(false)
+			  })
+			  .catch((error) => { 
+					if(error.response.status === 500)
+						console.log("server error")
+					else 
+						console.log(error.response.data)
+			  })
+		}
+
+		fetchUser(source.token);
+	  	return () => {
+            source.cancel();
+        };
+	}, [])
 
 	return (
 		<Container>
