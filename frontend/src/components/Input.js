@@ -73,6 +73,7 @@ const Input = ()=>{
 	const [loaded, setLoaded] = useState(()=>false)
 	const [correct, setCorrect] = useState({c:0})
 	const [startTime, setStartTune] = useState({t:null})
+	const [game, setGame] = useState(()=>'off')
 	const elRefs = useRef([])
 
 	const fetchQuotes = async()=>{
@@ -127,6 +128,7 @@ const Input = ()=>{
 			setIndex(temIndex)
 		}
 		else if(key === 'Backspace' && temIndex.i > 0){
+			temCorrect.c -= 1
 			ele[temIndex.i].current.className = ''
 			temIndex.i -= 1
 			setIndex(temIndex)
@@ -147,6 +149,8 @@ const Input = ()=>{
 
 	const handlekeyDown = (e) => {
 		let currentChar = elRefs.current
+		if(game === 'off')
+			setGame('on')
 		checkChar(e.key, currentChar)
 		
 	}
@@ -162,6 +166,7 @@ const Input = ()=>{
 		setLoaded(false)
 		setIndex({i:0})
 		setCorrect({c:0})
+		setGame('off')
 	}
 
 	useEffect(() => {
@@ -197,6 +202,10 @@ const Input = ()=>{
 									</span>
 							})}
 							<Lable>
+								<State>
+									<div>Game / {game}</div>
+									<div>Words / {quote.content.split(' ').length}</div>
+								</State>
 								<Button type="submit"tabindex="-1" onClick={handleClick} className="disabled" >
 									Next quote
 									<span  className="iconify" data-icon="grommet-icons:form-next-link"></span>
