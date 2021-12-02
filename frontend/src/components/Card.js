@@ -26,7 +26,9 @@ const Card = ({props}, { serialize = JSON.stringify , deserialize = JSON.parse }
 			</UserWrapper>
 				<H>{props.username}</H>
 			<H>{serialize(props.wpm)}</H>
+			<H>{serialize(props.accuracy)}%</H>
 			<H>{serialize(props.rank)}</H>
+			<a href='/auth/logout'>logout</a>
 		</>
 	)
 }

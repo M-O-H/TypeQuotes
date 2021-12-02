@@ -172,7 +172,6 @@ const Input = ()=>{
 	useEffect(() => {
 		fetchQuotes();
 		fetchUser();
-		console.log('once');
 	}, []);
 
 	useEffect(() => {
