@@ -13,10 +13,14 @@ passport.deserializeUser((user, done) => {
  
 let herokuCallBack = "/auth/google/redirect"
 let callbackURL = "http://localhost:3001/auth/google/redirect";
+
+// /auth/google/callback redirect to http://localhost:3001/profile
+// https://tping-game.herokuapp.com/auth/google/callback redirect to https://tping-game.herokuapp.com
+
 passport.use(new GoogleStrategy({
 	clientID: process.env.GOOGLE_CLIENT_ID ,
 	clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-	callbackURL: process.env.CALLBACK_URL,
+	callbackURL: "/auth/google/callback",
 	proxy: true ,
 },
 	function(accessToken, refreshToken, profile, done) {
@@ -31,7 +35,7 @@ passport.use(new GoogleStrategy({
 					googleId: profile.id,
 					img:  profile._json.picture
 				}).save().then((newUser) => {
-					console.log("new user created" + newUser)
+					done(null, newUser)
 				})
 			}
 		})
