@@ -20,9 +20,11 @@ body{
   color: var(--logo-color);
 }
 
-.icons:hover{
+.iconify:hover{
   color: var(--iconsHover-text-color);
-  background: var(--iconsHover-background);
+}
+.iconify:focus{
+  color: var(--iconsHover-text-color);
 }
 
 .spinner{

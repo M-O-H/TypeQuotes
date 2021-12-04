@@ -22,6 +22,7 @@ const redirectToGoogleSSO = async ()=> {
 const Login = () => {
 	const [auth, setAuth] = useState(()=>false)
 
+	
 	useEffect(() => {
 		const source = axios.CancelToken.source();
 		const fetchUser = async (token) => {

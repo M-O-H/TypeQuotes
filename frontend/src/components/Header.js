@@ -46,7 +46,7 @@ const Header = ()=>{
 			</Logo>
 				<NavBar>
 					<Link to="/">
-							<Icon className="iconify" data-icon="fluent:keyboard-layout-split-24-filled"></Icon>
+							<Icon  className="iconify" data-icon="fluent:keyboard-layout-split-24-filled"></Icon>
 					</Link>
 
 					<Link to="/settings">

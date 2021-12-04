@@ -1,35 +1,100 @@
 import  React from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 
-const UserWrapper  = styled.div`
+const Container = styled.div`
 	display: flex;
 	align-items: center;
-	background: var(--quoteBox-background);
+	justify-content: center;
+	width: 100%
+
 `
-const H = styled.h1`
-	color: var(--text-color);
+const CarWrapper  = styled.div`
+	display: grid;
+	width: 70%;
+	border-radius: 1rem;
+	grid-template-rows; 1fr auto;
+	background-color: var(--quoteBox-background);
 `
 const Avatar = styled.img`
-	width: 3em;
-	height: 3em;
+	width: 18%;
+	border-radius: 10em;
 `
-const TestImg = styled.span`
-background: lightblue;
-padding: 3rem;
-border-radius: 5rem;
+const Banner = styled.div`
+	display: flex;
+	flex-direction: column;
+	color: var(--icons-text-color);
+	align-items: center;
+	padding: 1em;
 `
+const Status = styled.div`
+	padding: 1rem;
+`
+const StatusBar = styled.div`
+	display: flex;
+	border-radius: .3rem;
+	align-items: center;
+	background: var(--body-background);
+	color: var(--icons-text-color);
+`
+
+const Gap = styled.div`
+	width: 10%;
+	border-radius: 10rem;
+	background: white;
+`
+
+const Filed = styled.div`
+	width: 100%;
+	dispaly: flex;
+	text-align: center;
+	flex-direction: column;
+	line-height: 1.4em;
+	font-size: 1.8rem;
+	padding: 1rem 0;
+`
+
+const Title = styled.div`
+	font-size: 1rem
+`
+
 const Card = ({props}, { serialize = JSON.stringify , deserialize = JSON.parse }) => {
+	const logout = async () => {
+		document.cookie('express:sess', )
+	}
+
 	return(
-		<>
-			<img width={'25%'} src={props.img}/>
-			<UserWrapper>
-			</UserWrapper>
-				<H>{props.username}</H>
-			<H>{serialize(props.wpm)}</H>
-			<H>{serialize(props.accuracy)}%</H>
-			<H>{serialize(props.rank)}</H>
-			<a href='/auth/logout'>logout</a>
-		</>
+		<Container>
+			<CarWrapper>
+				<Banner>
+					<Avatar src={props.img}/>
+					<h2>{props.username}</h2>
+				</Banner>
+				<Status>
+					<StatusBar>
+						<Filed>
+							<div>1</div>
+							<Title>#</Title>
+						</Filed>
+						<Gap></Gap>
+						<Filed>
+							<div>{serialize(props.wpm)}</div>
+							<Title>Wpm</Title>
+						</Filed>
+						<Gap></Gap>
+						<Filed>
+							<div>{serialize(props.accuracy)}%</div>
+							<Title>Accuracy</Title>
+						</Filed>
+						<Gap></Gap>
+						<Filed>
+							{props.rank}
+							<Title>Rank</Title>
+						</Filed>
+					</StatusBar>
+				</Status>
+			</CarWrapper>
+		</Container>
 	)
 }
 

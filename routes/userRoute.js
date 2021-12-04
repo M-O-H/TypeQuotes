@@ -42,5 +42,9 @@ router.route('/board').get((req, res) => {
     .catch(err => res.status(401).send('db is empty'))
 })
 
+router.route('/logout').get((req, res) => {
+  res.clearCookie("express:sess.sig");
+  res.clearCookie("express:sess");
+})
 
 module.exports = router;
