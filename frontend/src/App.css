@@ -8,6 +8,7 @@ body{
   background: var(--body-background);
   transition: background 300ms ease-in-out;
   font-size: 16px;
+  font-family: sans-serif;
 }
 
 .App{
@@ -23,8 +24,8 @@ body{
 .iconify:hover{
   color: var(--iconsHover-text-color);
 }
-.iconify:focus{
-  color: var(--iconsHover-text-color);
+.iconify:focus-visible{
+  color: red;
 }
 
 .spinner{

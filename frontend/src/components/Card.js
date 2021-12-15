@@ -72,10 +72,6 @@ const Card = ({props}, { serialize = JSON.stringify , deserialize = JSON.parse }
 				</Banner>
 				<Status>
 					<StatusBar>
-						<Filed>
-							<div>1</div>
-							<Title>#</Title>
-						</Filed>
 						<Gap></Gap>
 						<Filed>
 							<div>{serialize(props.wpm)}</div>

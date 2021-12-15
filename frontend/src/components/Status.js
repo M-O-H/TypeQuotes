@@ -24,7 +24,7 @@ const Column = styled.div`
 `
 const Status = ({result})=>{
 	const fetchData = async() => {
-		if(result.id){
+		if(result.id !== null){
 			await axios.post('/result', result)
 			.catch(err=> {
 				if(err) throw err
@@ -33,7 +33,6 @@ const Status = ({result})=>{
 	}
 
 	useEffect(() => {
-		document.onkeydown = null;
 		fetchData()
 	},[result])
 

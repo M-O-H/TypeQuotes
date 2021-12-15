@@ -28,11 +28,8 @@ function App() {
   const fetchUser = async () => {
     await axios.get("/user")
       .then(response => {
-        if(response.status == 200){
+        if(response.data.status == 200)
           setAuth(true)
-        }
-        else
-        setAuth(false)
       })
       .catch((error) => { 
         if(error.response.status === 500)

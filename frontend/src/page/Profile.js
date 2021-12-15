@@ -27,16 +27,14 @@ const Profile = () => {
 		const fetchUser = async (token) => {
 			await axios.get("/userInfo", { cancelToken: token})
 			  .then(response => {
-				if(response.status == 200)
-					setUser(response.data)
+				if(response.data.status == 200)
+					setUser(response.data.user)
 				else setUser(null)
 			  })
 			  .catch((error) => { 
 					if(error.response.status === 500)
 						console.log("server error")
-					else 
-						console.log(error.response.data)
-				setUser(null)
+					else console.log(error.response.data)
 			  })
 		}
 

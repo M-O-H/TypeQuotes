@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef} from 'react'
 import styled  from 'styled-components'
 
 const Container = styled.div`
@@ -45,7 +45,8 @@ const Header = styled.div`
 const settting = () => {
 	const ref = useRef('default')
 	const setTheme = (selectedTheme) => {
-		document.body.classList.replace(ref.current, selectedTheme)
+		document.body.classList.remove('default', 'ishtar', 'bento', 'arch')
+		document.body.classList.add(selectedTheme)
 		ref.current = selectedTheme
 		localStorage.setItem('theme', ref.current)
 	}
@@ -60,11 +61,6 @@ const settting = () => {
 				<ThemeBtn className="ishtarBtn" onClick={()=>setTheme('ishtar')}>Ishtar</ThemeBtn>
 				<ThemeBtn className="bentoBtn"  onClick={()=>setTheme('bento')}>bento</ThemeBtn>
 				<ThemeBtn className="archBtn"  onClick={()=>setTheme('arch')}>Arch</ThemeBtn>
-				<ThemeBtn className="campingBtn"  onClick={()=>setTheme('camping')}>camping</ThemeBtn>
-				{/* <ThemeBtn className="ishtarBtn" onClick={()=>setTheme('ishtar')}>Ishtar</ThemeBtn>
-				<ThemeBtn className="bentoBtn"  onClick={()=>setTheme('bento')}>bento</ThemeBtn>
-				<ThemeBtn className="archBtn"  onClick={()=>setTheme('arch')}>Arch</ThemeBtn>
-				<ThemeBtn className="campingBtn"  onClick={()=>setTheme('camping')}>camping</ThemeBtn> */}
 				</GridWrapper>
 			</CardWrapper>
 		</Container>

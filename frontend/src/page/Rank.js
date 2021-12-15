@@ -62,8 +62,8 @@ const LeaderBoard = () => {
 		const fetchUsers = async(token) => {
 			await axios.get('/board', { cancelToken: token})
 			.then(response => {
-				if(response.status == 200)
-					setPlayers(response.data)
+				if(response.data.status == 200)
+					setPlayers(response.data.users)
 				else setPlayers(null)
 			})
 			.catch(error => {

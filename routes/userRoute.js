@@ -11,9 +11,9 @@ const setResult = (id, wpm, accuracy) => {
 
 router.route('/user').get((req, res) => {
   if(req.user)
-   res.status(200).send(req.user);
+   res.send({status: 200, user:req.user});
   else
-    res.status(401).send('user Unauthorized')
+    res.send({status: 401, msg:'Unaauthorized'})
 })
 
 router.route('/result').post((req, res) => {
@@ -28,18 +28,18 @@ router.route('/userInfo').get((req, res) => {
     User.findOne({googleId:req.user.id})
     .then((currentUser) => {
       if(currentUser)
-        res.status(200).send(currentUser);
-        else
-        res.status(401).send('no user exists in db')
+        res.send({status: 200, user:currentUser});
+      else
+        res.send({status: 401, msg:'user not exist in database'});
     })
-    else
+  else
     res.status(401).send('user Unauthorized')
 })
 
 router.route('/board').get((req, res) => {
   User.find().sort({wpm: -1})
-    .then(users => res.status(200).send(users))
-    .catch(err => res.status(401).send('db is empty'))
+    .then(users => res.send({status: 200, users:users}))
+    .catch(err => res.send({status: 401, msg:'Database is empty', error:err}))
 })
 
 router.route('/logout').get((req, res) => {

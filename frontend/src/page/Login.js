@@ -11,33 +11,27 @@ const Container = styled.div`
 	padding: 3rem;
 `
 
-// /auth/google/
 const redirectToGoogleSSO = async ()=> {
-	const googleLoginURL = "/auth/google";
+	const googleLoginURL = "http://localhost:3001/auth/google";
 	window.open(googleLoginURL,"_self", "width=500, height=600");
 }
-
-// lift and colocating components
 
 const Login = () => {
 	const [auth, setAuth] = useState(()=>false)
 
-	
 	useEffect(() => {
 		const source = axios.CancelToken.source();
 		const fetchUser = async (token) => {
 			await axios.get("/user", { cancelToken: token})
 			  .then(response => {
-				if(response.status == 200)
+				if(response.data.status == 200)
 					setAuth(true)
-				else
-					setAuth(false)
+				else setAuth(false)
 			  })
-			  .catch((error) => { 
+			  .catch((error) => {
 					if(error.response.status === 500)
 						console.log("server error")
-					else 
-						console.log(error.response.data)
+					else console.log(error.response.data)
 			  })
 		}
 

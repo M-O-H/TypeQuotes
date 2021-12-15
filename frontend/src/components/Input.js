@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef, createRef } from 'react'
-import { getResult ,replace } from './keyPress';
 import styled  from 'styled-components'
 import Status from './Status';
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import '../style/style.css'
-import { set } from 'mongoose';
 
 const BoxWrapper = styled.div`
 display: flex;
@@ -41,9 +39,9 @@ const Textwrapper = styled.div`
 `
 const Button = styled.button`
 background: none;
-color: #E9E1E1;
 border: none;
 margin-left: auto;
+color: var(	--text-color);
 `
 
 const Btn = styled.button`
@@ -55,19 +53,36 @@ border: none;
 
 const Lable = styled.div`
 	display: flex;
-	color: #E9E1E1;
+	color: #d4d4d481;
 	padding: .4em 0;
 `
 const State = styled.div`
+padding: 8px 0;
 display: grid;
 grid-template-columns: repeat(2, 1fr);
+color: var(	--text-color);
 gap: 1.5em;
 `
+const Adjust = styled.div`
+display: flex;
+align-items: center;
+gap: 1em;
+padding: 10px 0;
+`
 
-
+const AdBtn = styled.li`
+list-style-type: none;
+cursor: pointer;
+font-size: 1.4em;
+font-family: var(--quoteBox-fontFamily);
+color: var(	--text-color);
+border: none;
+border-radius: .2em;
+`
 const Input = ()=>{
 	const [user, setUser] = useState(null)
 	const [quote, setQuote] = useState({});
+	const [maxLength, setMaxLength] = useState(()=>40)
 	const [index, setIndex] = useState(()=>{i:0})
 	const [result, setResult] = useState(null)
 	const [loaded, setLoaded] = useState(()=>false)
@@ -78,7 +93,7 @@ const Input = ()=>{
 
 	const fetchQuotes = async()=>{
 		resetGame()
-		await axios.get('https://api.quotable.io/random')
+		await axios.get(`https://api.quotable.io/random?minLength=${maxLength}`)
 		.then(res => {
 			elRefs.current = 
 			Array(res.data.content.length).fill().map((_, i) => 
@@ -91,12 +106,13 @@ const Input = ()=>{
 		})
 	}
 
-	const fetchUser = async () => {
-		await axios.get("/user")
+	const fetchUser = async (token) => {
+		await axios.get("/user", { cancelToken: token})
 		  .then(response => {
-			if(response.status == 200){
-			  setUser(response.data.id)
+			if(response.data.status == 200){
+			  setUser(response.data.user)
 			}
+			setUser(null);
 		  })
 		  .catch((error) => { 
 			if(error.response.status === 500)
@@ -104,14 +120,16 @@ const Input = ()=>{
 			else console.log(error.response.data)
 		  })
 	  }
+
 	const getResult = () => {
 		const endTime = new Date();
-		const seconds = (endTime - startTime.t) / 1000;
+		const seconds =(endTime - startTime.t) / 1000;
 		const numberOfWords = quote.content.split(' ').length;
-		const wpm = Math.floor(( numberOfWords / seconds) * 60);
-		const incorrect = quote.content.split('').length - correct.c
+		const incorrect = quote.content.split('').length - correct.c;
+		const check = incorrect - quote.content.split('').length;
 		const acc = Math.floor(((correct.c - incorrect) / quote.content.length) * 100);;
 		const accuracy = acc > 0 ? acc : 0
+		const wpm = accuracy == 0 ? 0 :  Math.floor(( numberOfWords / seconds) * 60);
 		setResult({wpm:wpm, accuracy:accuracy, quoteInfo:quote, id:user})
 	}
 
@@ -155,12 +173,16 @@ const Input = ()=>{
 		
 	}
 
+	const adjustQuote = (length) => {
+		setMaxLength(length);
+	}
 	const handleClick = (e) => {
 		e.target.blur();
 		fetchQuotes()
 	}
 
 	// initialize state variables
+
 	const resetGame = () =>{
 		setResult(null)
 		setLoaded(false)
@@ -170,9 +192,11 @@ const Input = ()=>{
 	}
 
 	useEffect(() => {
+		const source = axios.CancelToken.source();
 		fetchQuotes();
-		fetchUser();
-	}, []);
+		fetchUser(source.token);
+	}, [maxLength]);
+
 
 	useEffect(() => {
 		if(loaded == true){
@@ -195,10 +219,20 @@ const Input = ()=>{
 					<>
 					{loaded? 
 						<>
+							<Adjust>
+								<AdBtn onClick={()=>adjustQuote(10)}>10</AdBtn>/
+								<AdBtn onClick={()=>adjustQuote(100)}>25</AdBtn>/
+								<AdBtn onClick={()=>adjustQuote(200)}>50</AdBtn>/
+								<AdBtn onClick={()=>adjustQuote(300)}>100</AdBtn>
+							</Adjust>
 							{quote.content.split('').map((char, id) => {
-									return <span  ref={elRefs.current[id]}  key={id} className="">
+								if(id==0)
+									return <span  ref={elRefs.current[id]}  key={id} className="cursor">
 									{char.toLowerCase()}
 									</span>
+								else return <span  ref={elRefs.current[id]}  key={id} className="">
+								{char.toLowerCase()}
+								</span>
 							})}
 							<Lable>
 								<State>
