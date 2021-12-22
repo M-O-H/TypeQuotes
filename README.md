@@ -1,3 +1,6 @@
+![screenshot-20211223-00:39:53](https://user-images.githubusercontent.com/47217195/147163045-061c8e94-912b-4520-b298-fa0f52170142.png)
+
+
 #  Typequotes
 
 Simple game for practicing your typing skills, Currently it featured an account system to save your score and compete with other players over the leaderboard. 
