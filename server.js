@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 })); 
 app.use(cookieSession({
-	maxAge: "tut-session",
+	maxAge: "provide-session",
 	keys: ['key1', 'key2']
 }))
 
