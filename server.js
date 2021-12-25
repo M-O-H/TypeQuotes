@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001
 require('dotenv').config()
 
 // connect to mongodb
-mongoose.connect(process.env.MONGODB_DB_URL || "mongodb+srv://admin:12345@cluster0.ncy4q.mongodb.net/test?retryWrites=true&w=majority", (err)=>{
+mongoose.connect(process.env.MONGODB_DB_URL, (err)=>{
   if(err) throw err
   console.log('connected to database successfully')
 })
